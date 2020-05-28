@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> COVID-19 | NIGERIA</title>
+  <link rel="icon" href="images/covid19.png" type="image/gif" sizes="32x32">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <!-- EXTERNAL CSS -->
+  <link rel="stylesheet" type="text/css" href="stylesheets/styling.css" />
+  <!-- MAPBOX -->
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: black" onload="handwashwarning()">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="home.html">
+        <span class="desktop">
+          <img src="images/naijaflag.png" width="40" height="40"> 
+        <span class="desktop">COVID-19 Explorer</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://covid19.ncdc.gov.ng/statecontacts.php" target="_blank">NCDC State Contact Numbers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="selftestbutton" onclick="selftestcard()">Take a Self-Test</a>    
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019" target="_blank">Visit WHO</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>    
+        </ul>
+      </div>  
+    </div>
+  </nav>
+
+  <div class="bg">
+    <div class="container" style="padding-top: 2%">
+    <div class="row">
+      <div class="col-sm-4">
+        <video id="video" controls loop muted autoplay>
+          <source src= "videos/7steps.mp4" type="video/mp4">
+        </video>
+        <p style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color: white; text-align: center;">source: www.who.int</p>
+      </div>
+      <div class="col-sm-4">
+        <h5 style="margin-left: 10%">CASES | Nigeria</h5>
+        <div class="jumbotron" style="padding-top: 1%; padding-bottom: 1%; height: 200px">
+          <div id="cases"><h3 id="fonting"><img src="assets/files.svg" style="height: 30px"> Confirmed: 232</h3>
+          </div>
+
+          <div id="recoveries"><h3 id="fonting"><img src="assets/patient.svg" style="height: 30px"> Recovered: 33</h3>
+          </div>
+
+          <div id="deaths"><h3 id="fonting"><img src="assets/death.svg" style="height: 30px"> Deaths: 5</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <h5 style="margin-left: 10%">CASES | Global</h5>
+        <div class="jumbotron" style="padding-top: 1%; padding-bottom: 1%; height: 200px">
+          <div id="cases"><h3 id="fonting"><img src="assets/files.svg" style="height: 30px"> Confirmed: 1,273,712</h3>
+          </div>
+
+          <div id="recoveries"><h3 id="fonting"><img src="assets/patient.svg" style="height: 30px"> Recovered: 262,486</h3>
+          </div>
+
+          <div id="deaths"><h3 id="fonting"><img src="assets/death.svg" style="height: 30px"> Deaths: 69,458</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <h5>MAP</h5>  
+      <marquee behavior="scroll" style="font-family:Arial, sans-serif; font-size: 15px;  background-color: black; color: white;" direction="left" scrollamount="5" onmouseover="this.stop()" onmouseout="this.start()">
+        <a id="lagos" >LAGOS: 120</a> | 
+        <a id="fct">FCT: 47</a> | 
+        <a id="osun">OSUN: 20</a> | 
+        <a id="oyo">OYO: 9</a> | 
+        <a id="akwaibom">AWKA IBOM: 5</a> | 
+        <a id="ogun">OGUN: 4</a> | 
+        <a id="edo">EDO: 9</a> | 
+        <a id="kaduna">KADUNA: 5</a> | 
+        <a id="bauchi">BAUCHI: 6</a> | 
+        <a id="enugu">ENUGU: 2</a> | 
+        <a id="ekiti">EKITI: 2</a> | 
+        <a id="rivers">RIVERS: 1</a> | 
+        <a id="benue">BENUE: 1</a> | 
+        <!-- <ondo's coordinate is yet to be set> -->
+        <a id="ondo">ONDO: 1</a> | 
+
+      </marquee> 
+      <small>Click on States to zoom in | <span id="date"></span></small>
+
+      <div id='map'>
+        <nav id="menu"></nav>
+      </div>
+      <div class='controlcontainer'>
+        <small>Day: <label id='active-day'>40 : 6/Mar/2020</label></small>
+        <input id='slider' class='row' type='range' min='1' max='41' step='1' value='40'/>
+      </div>
+
+      <br>
+    </div>
+    <div class="col-sm-4">
+     
+      <hr class="d-sm-none">
+      <h5>FEEDS</h5>
+      <div id="feeds"> 
+        <button id="feeds-button" onclick="tweetFeed()"> Twitter Feeds</button>
+        <button id="feeds-button" onclick="newsFeed()">News Feeds</button>  
+        <!-- <button style="color:white; font-family: serif; background-color: royalblue;"><a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019" target="_blank">visit WHO</a></button>  -->
+      </div>
+
+      <div id="ncdctweet" style=" z-index: 0px;" >
+        <a class="twitter-timeline" data-width="320" data-height="380" data-theme="dark" href="https://twitter.com/NCDCgov?ref_src=twsrc%5Etfw"></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+      </div>
+      <div id="googlerss" >
+        <iframe width="320" height="380" src="https://rss.app/embed/v1/QZx9EwdfY1EhzQ93" frameBorder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="scripts/script.js"></script>
+
+
+  <div class="container">
+    <div id="selftest"> 
+      <img src="images/covid19_1.png" width="64" height="64" style="margin-left: 42%; margin-top: 5%;">
+      <p style="text-align: center; font-family: Arial, sans-serif;"> <b><u>COVID-19 SELF TEST</u></b> </p>
+      <p style="text-align: center; font-weight: bolder;">This is a COVID-19 self assessment tool that
+    was calibrated based on WHO guidelines. It is not a diagnostic tool</p><br/>
+      <button id="yesbutt" onclick="continueToFirstQuestion()"><b>Continue</b></button>
+      <button id="yesbutt" class="desktop" style="background-color: rgb(231, 25, 18); " onclick="selftestcard()"><b>Exit</b></button>
+    </div>
+
+    <div id="firstquestion"> 
+      <img src="images/cough.png" width="120" height="120" style="margin-left: 42%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Do you have Cough?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToSecondQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18); " onclick="continueToSecondQuestion()"><b>NO</b></button>
+    </div>
+
+    <div id="secondquestion"> 
+      <img src="images/sneeze2.jpg" width="120" height="120" style="margin-left: 34%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Do you have Cold?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToThirdQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18); " onclick="continueToThirdQuestion()"><b>NO</b></button>
+    </div>
+
+    <div id="thirdquestion"> 
+      <img src="images/diarrhea.jpg" width="120" height="120" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Are you having diarrhea?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToFourthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToFourthQuestion()"><b>NO</b></button>
+    </div>
+
+    <div id="fourthquestion"> 
+      <img src="images/Sorethroat.jpg" width="120" height="120" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Are you having sorethroat?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToFifthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToFifthQuestion()"><b>NO</b></button>
+    </div>
+
+    <div id="fifthquestion"> 
+      <img src="images/headache.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Are you having a headache?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToSixthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToSixthQuestion()" ><b>NO</b></button>
+    </div>
+
+    <div id="sixthquestion"> 
+      <img src="images/fever.png" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Do you have fever<br/>(Temperature 37.8°C and above)?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToSeventhQuestion();"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToSeventhQuestion()" ><b>NO</b></button>
+    </div>
+
+    <div id="seventhquestion"> 
+      <img src="images/difficultbreathe.jpeg" width="150" height="120" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Are you having difficulty breathing?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToEighthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToEighthQuestion()" ><b>NO</b></button>
+    </div>
+
+    <div id="eighthquestion"> 
+      <img src="images/fatigue.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Are you experiencing fatigue?</p><br/>
+      <button id="yesbutt" onclick="counter();continueToNinthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToNinthQuestion()" ><b>NO</b></button>
+    </div>
+
+    <div id="ninthquestion"> 
+      <img src="images/travel.jpeg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Have you traveled recently <br> during the past 14 days?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToTenthQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToTenthQuestion()" ><b>NO</b></button>
+    </div>
+
+    <div id="tenthquestion"> 
+      <img src="images/outbreak-coronavirus-world.png" width="150" height="90" style="margin-left: 33%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Do you have a history of traveling <br>to an area infected with COVID-19?</p><br/>
+      <button id="yesbutt" onclick=" counter(); continueToEleventhQuestion()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToEleventhQuestion()"><b>NO</b></button>
+    </div>
+
+    <div id="eleventhquestion"> 
+      <img src="images/nursehelp.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;">Do you have direct contact with or are you taking <br> care of a positive COVID-19 PATIENT?</p><br/>
+      <button id="yesbutt" onclick="counter(); continueToResult()"><b>YES</b></button>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="continueToResult()" ><b>NO</b></button>
+    </div>
+
+    <div id="resultlow"> 
+      <img src="images/doctorreport.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;"><u>RESULT</u></p>
+      <p style="text-align: center; font-weight: bolder;">Your risk of Covid19 according to the test is<br>
+      <b style="font-family: Georgia; color: rgb(245, 203, 114); text-align: center; font-size: 35px;">LOW</b><br/>You might need to get some rest or try the test later</p>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="closeResult()" ><b>Exit</b></button>
+    </div>
+
+    <div id="resultmedium"> 
+      <img src="images/doctorreport.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;"><u>RESULT</u></p>
+      <p style="text-align: center; font-weight: bolder;">Your risk of Covid19 according to the test is<br>
+      <b style="font-family: Georgia; color: rgb(92, 233, 37); text-align: center; font-size: 35px;">MEDIUM</b><br/>DO NOT PANICK<br/>Stay hydrated. Isolate yourself and try this test after two days</p>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="closeResult()" ><b>Exit</b></button>
+    </div>
+
+    <div id="resulthigh"> 
+      <img src="images/doctorreport.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;"><u>RESULT</u></p>
+      <p style="text-align: center; font-weight: bolder;">Your risk of Covid19 according to the test is<br>
+      <b style="font-family: Georgia; color: rgb(233, 60, 37); text-align: center; font-size: 35px;">HIGH</b><br/>DO NOT PANICK<br/> Isolate yourself and contact your doctor immediately!</p>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="closeResult()" ><b>Exit</b></button>
+    </div>
+
+    <div id="resultsevere"> 
+      <img src="images/doctorreport.jpg" width="120" height="130" style="margin-left: 35%; margin-top: 3%;">
+      <p style="text-align: center; font-weight: bolder;"><u>RESULT</u></p>
+      <p style="text-align: center; font-weight: bolder;">Your risk of Covid19 according to the test is<br>
+      <b style="font-family: Georgia; color: rgb(95, 13, 3); text-align: center; font-size: 25px;">SEVERE</b><br/>DO NOT PANICK<br/> Isolate yourself and Call: <a href="tel: 080097000010">0800-9700-0010</a>,<br/> SMS: <a href="sms:08099555577">08099555577</a> or<br /> 
+      WhatsApp: <a href="https://wa.me/2347087110839" target="_blank" style="color: cornflowerblue;">07087110839</a></p>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="closeResult()" ><b>Exit</b></button>
+    </div>
+
+    <div id="resultunclear"> 
+
+      <p style="text-align: center; font-weight: bolder; margin-top: 20%;"><u>RESULT</u></p>
+      <p style="text-align: center; font-weight: bolder;">Your risk of Covid19 according to the test is<br>
+      <b style="font-family: Georgia; color: rgb(2, 2, 32); text-align: center; font-size: 25px;">UNCLEAR</b><br/>Please Try Again</p>
+      <button id="yesbutt" style="background-color: rgb(231, 25, 18);" onclick="closeResult()" ><b>Exit</b></button>
+    </div>
+  </div>
+  </div>
+
+
+  <div class="jumbotron text-center" style="margin-bottom:0; height: 10px; background-color: black">
+    <p style="font-size: 10px; color: white;">This Website relies upon public data from various sources, including and not limited to <b>NCDC, WHO,</b> News feeds obtained from Twitter and NewsAPI.
+    The contents of this Website are for information purposes only and are not guaranteed to be accurate. Reliance on this Website for medical guidance is strictly prohibited.
+    <!-- built by <a href="https://twitter.com/somto_RM" style="color:rgb(107, 99, 56);" target="_blank">@somto_RM</a>  <a href="https://twitter.com/everybees" style="color:rgb(107, 99, 56);" target="_blank">@everybees</a> and <a href="https://twitter.com/dayoola__" style="color:rgb(107, 99, 56);" target="_blank">@dayoola__</a>   -->
+    </p>
+  </div>
+
+</body>
+</html>
